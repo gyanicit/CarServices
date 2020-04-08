@@ -48,22 +48,19 @@ public class CarController {
 	@PostMapping(CarConstant.CAR_URI)
 	public ResponseEntity<String> insert(@Valid @RequestBody CarDTO carDTO) {
 		carService.insert(carDTO);
-		ResponseEntity<String> responseEntity = new ResponseEntity<>(carSaveSuccess, HttpStatus.OK);
-		return responseEntity;
+		return new ResponseEntity<>(carSaveSuccess, HttpStatus.OK);
 	}
 
 	@PutMapping(CarConstant.CAR_URI_WITH_ID)
 	public ResponseEntity<Car> update(@PathVariable Integer carId, @Valid @RequestBody CarDTO carDTO) {
 		Car car=carService.update(carId,carDTO);
-		ResponseEntity<Car> responseEntity = new ResponseEntity<>(car, HttpStatus.OK);
-		return responseEntity;
+		return new ResponseEntity<>(car, HttpStatus.OK);
 	}
 
 	@DeleteMapping(CarConstant.CAR_URI_WITH_ID)
 	public ResponseEntity<String> delete(@PathVariable Integer carId) {
 		carService.delete(carId);
-		ResponseEntity<String> responseEntity = new ResponseEntity<>(carDeleteSuccess, HttpStatus.OK);
-		return responseEntity;
+		return new ResponseEntity<>(carDeleteSuccess, HttpStatus.OK);
 	}
 
 	@GetMapping(CarConstant.CAR_URI)
@@ -71,8 +68,7 @@ public class CarController {
 			   @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "1000")})
 	public ResponseEntity<List<Car>> getDetails() {
 		List<Car> cars=carService.getDetails();
-		ResponseEntity<List<Car>> responseEntity = new ResponseEntity<>(cars, HttpStatus.OK);
-		return responseEntity;
+		return new ResponseEntity<>(cars, HttpStatus.OK);
 	}
 
 	@GetMapping(CarConstant.CAR_URI_WITH_ID)
@@ -81,15 +77,13 @@ public class CarController {
 	public ResponseEntity<CarDTO> getDetailsById(@PathVariable Integer carId) {
 		Car car=carService.getDetailsById(carId).orElseThrow(() -> new ResourceNotFoundException("Car", "id", carId));
 		CarDTO carDTO = modelMapper.map(car, CarDTO.class);
-		ResponseEntity<CarDTO> responseEntity = new ResponseEntity<>(carDTO, HttpStatus.OK);
-		return responseEntity;
+		return new ResponseEntity<>(carDTO, HttpStatus.OK);
 	}
 	
 	@SuppressWarnings("unused")
 	private ResponseEntity<CarDTO> fallbackDefaultCar(Integer carId){
 		CarDTO carDTO = new CarDTO(-1, "DefaultCarName", 0.00, "DefaultModel", 0000, FuelType.ELECTRIC);
-		ResponseEntity<CarDTO> responseEntity = new ResponseEntity<>(carDTO, HttpStatus.OK);
-		return responseEntity;
+		return new ResponseEntity<>(carDTO, HttpStatus.OK);
 	}
 
 	@SuppressWarnings("unused")
@@ -97,7 +91,6 @@ public class CarController {
 		List<Car> cars=new ArrayList<>();
 		cars.add(new Car(-1, "DefaultCarName", 0.00, "DefaultModel", 0000, FuelType.ELECTRIC));
 		cars.add(new Car(-2, "DefaultCarName", 0.00, "DefaultModel", 0000, FuelType.ELECTRIC));
-		ResponseEntity<List<Car>> responseEntity = new ResponseEntity<>(cars, HttpStatus.OK);
-		return responseEntity;
+		return new ResponseEntity<>(cars, HttpStatus.OK);
 	}
 }
